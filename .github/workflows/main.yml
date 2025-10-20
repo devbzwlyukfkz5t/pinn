@@ -98,9 +98,10 @@ jobs:
         #sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android $AGENT_TOOLSDIRECTORY
         sudo -E apt-get update
         sudo -E apt-get upgrade
-        sudo -E apt-get dist-upgrade
+        #sudo -E apt-get dist-upgrade
         sudo -E apt-get -y install software-properties-common
         sudo -E add-apt-repository ppa:rock-core/qt4
+        sudo sed -i 's/jammy/focal/g' /etc/apt/sources.list.d/rock-core-ubuntu-qt4-jammy.list
         sudo -E apt-get update
         sudo -E apt-get -y install build-essential rsync texinfo libncurses-dev whois unzip bc qt4-linguist-tools libssl-dev libgmp-dev
         sudo -E apt-get -y install qt4-dev-tools libqt4-dev libqt4-core libqt4-gui or sudo apt install qt4-dev-tools libqt4-dev libqtcore4 libqtgui4
