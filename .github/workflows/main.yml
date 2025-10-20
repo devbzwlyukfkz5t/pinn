@@ -1,4 +1,4 @@
-name: PINN OpenWrt
+name: PINN
 
 on:
   workflow_dispatch:
