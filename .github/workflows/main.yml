@@ -119,14 +119,6 @@ jobs:
         cd pinn
         echo "PINN_PATH=$PWD" >> $GITHUB_ENV
 
-    - name: Cache Toolchain
-      if: env.CACHE_TOOLCHAIN == 'true'
-      uses: HiGarfield/cachewrtbuild@main
-      with:
-        ccache: false
-        mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
-        prefix: ${{ env.PINN_PATH }}
-
     - name: Compile Firmware
       id: compile
       run: |
@@ -146,7 +138,7 @@ jobs:
     - name: Organize Files
       if: steps.compile.outputs.status == 'success'
       run: |
-        cd $PINN_PATH/output/*
+        ls $PINN_PATH/output/ -l
         echo "FIRMWARE_PATH=$PWD" >> $GITHUB_ENV
 
     - name: Upload Firmware To Artifact
