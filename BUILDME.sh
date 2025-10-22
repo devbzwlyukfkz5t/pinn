@@ -140,7 +140,7 @@ function select_kernelconfig {
 
 ############################ CONFIGURE OPTIONS ######################################
 
-# WARNING: don't try changing these - you'll break buildroot
+echo WARNING: don't try changing these - you'll break buildroot
 BUILD_DIR="output/build"
 IMAGES_DIR="output/images"
 
@@ -153,56 +153,56 @@ SKIP_RECOVERY_REBUILD=0
 UPDATE_TS=0
 
 for i in $*; do
-    # Update raspberrypi/firmware master HEAD version in package/rpi-firmware/rpi-firmware.mk to latest
+    echo Update raspberrypi/firmware master HEAD version in package/rpi-firmware/rpi-firmware.mk to latest
     if [ $i = "update-firmware" ]; then
         update_github_package_version rpi-firmware raspberrypi/firmware stable
     fi
 
-    # Update raspberrypi/userland master HEAD version in package/rpi-userland/rpi-userland.mk to latest
+    echo Update raspberrypi/userland master HEAD version in package/rpi-userland/rpi-userland.mk to latest
     if [ $i = "update-userland" ]; then
         update_github_package_version rpi-userland raspberrypi/userland master
     fi
 
-    # Update raspberrypi/linux rpi-$KERNEL.y HEAD version in buildroot/.config to latest
+    echo Update raspberrypi/linux rpi-$KERNEL.y HEAD version in buildroot/.config to latest
     if [ $i = "update-kernel" ]; then
         update_github_kernel_version raspberrypi/linux rpi-$KERNEL.y
     fi
 
-    # Update language TS files
+    echo Update language TS files
     if [ $i = "update-ts" ]; then
         UPDATE_TS=1
     fi
 
-    # Option to build just recovery without completely rebuilding both kernels
+    echo Option to build just recovery without completely rebuilding both kernels
     if [ $i = "skip-kernel-rebuild" ]; then
         SKIP_KERNEL_REBUILD=1
     fi
-    # Option to build just recovery without completely rebuilding both kernels
+    echo Option to build just recovery without completely rebuilding both kernels
     if [ $i = "skip-kernel-6" ]; then
         SKIP_KERNEL_6=1
     fi
 
-    # Option to build just recovery without completely rebuilding both kernels
+    echo Option to build just recovery without completely rebuilding both kernels
     if [ $i = "skip-kernel-7" ]; then
         SKIP_KERNEL_7=1
     fi
 
-    # Option to build just recovery without completely rebuilding both kernels
+    echo Option to build just recovery without completely rebuilding both kernels
     if [ $i = "skip-kernel-7l" ]; then
         SKIP_KERNEL_7L=1
     fi
 
-    # Option to build just recovery without completely rebuilding both kernels
+    echo Option to build just recovery without completely rebuilding both kernels
     if [ $i = "skip-kernel-8" ]; then
         SKIP_KERNEL_8=1
     fi
 
-    # Option to build just recovery without completely rebuilding both kernels
+    echo Option to build just recovery without completely rebuilding both kernels
     if [ $i = "skip-recovery-rebuild" ]; then
         SKIP_RECOVERY_REBUILD=1
     fi
 
-    # Early-exit (in case we want to just update config files without doing a build)
+    echo Early-exit (in case we want to just update config files without doing a build)
     if [ $i = "nobuild" ]; then
         exit
     fi
@@ -228,7 +228,7 @@ done
 
 cd ${BUILDROOT_NEW} #buildroot-2023.02
 
-# Create output dir and copy files
+echo Create output dir and copy files
 FINAL_OUTPUT_DIR="../$NOOBS_OUTPUT_DIR"
 mkdir -p "$FINAL_OUTPUT_DIR"
 mkdir -p "$FINAL_OUTPUT_DIR/os"
@@ -237,12 +237,12 @@ cp -r ../sdcontent/* "$FINAL_OUTPUT_DIR"
 if [ $SKIP_KERNEL_REBUILD -ne 1 ]; then
 
     if [ $SKIP_KERNEL_8 -ne 1 ]; then
-        # Rebuild kernel for ARMv8
+        echo Rebuild kernel for ARMv8
         select_kernelconfig armv8
         #select_bits64 1
         make linux-reconfigure
         make rpi-firmware
-        # copy ARMv8 kernel
+        echo copy ARMv8 kernel
         cp "$IMAGES_DIR/Image.gz"                         "$FINAL_OUTPUT_DIR/kernel8.img"
         for f in "$IMAGES_DIR/*.dtb";                   do cp $f "$FINAL_OUTPUT_DIR"; done
 	mkdir -p "$FINAL_OUTPUT_DIR/overlays6"
@@ -262,7 +262,7 @@ fi
 
 ############################ BUILD 32-bit 5.10 KERNELS ######################################
 
-# Let buildroot build everything in rootfs
+echo Let buildroot build everything in rootfs
 cd ..
 cd ${BUILDROOT_OLD} #buildroot
 
